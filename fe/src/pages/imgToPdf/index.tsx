@@ -1,8 +1,8 @@
 function ImgToPdf(): JSX.Element {
   return (
-    <>
-      <div>Upload images to convert them to PDF</div>
-    </>
+    <div data-testid="img-to-pdf-page">
+      Upload images to convert them to PDF
+    </div>
   );
 }
 

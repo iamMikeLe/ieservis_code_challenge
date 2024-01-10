@@ -1,9 +1,5 @@
 function LoginPage(): JSX.Element {
-  return (
-    <>
-      <div>login page</div>
-    </>
-  );
+  return <div data-testid="login-page">login page</div>;
 }
 
 export default LoginPage;
