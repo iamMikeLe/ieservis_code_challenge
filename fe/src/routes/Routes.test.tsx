@@ -2,6 +2,19 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
 
+test("renders Admin login page on /admin/login", () => {
+  render(
+    <MemoryRouter initialEntries={["/admin/login"]}>
+      <App />
+    </MemoryRouter>
+  );
+
+  const loginElement = screen.getByTestId("admin-login");
+  expect(loginElement).toBeInTheDocument();
+});
+
+// ------------------------------
+
 test("renders login page on /login", () => {
   render(
     <MemoryRouter initialEntries={["/login"]}>
