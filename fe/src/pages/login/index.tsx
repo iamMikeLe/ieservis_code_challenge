@@ -10,7 +10,11 @@ import {
 } from "mdb-react-ui-kit";
 
 import pc from "../../assets/images/pc.jpg";
-import { selectLoginFormValues, setMealForm } from "../../store/generalSlice";
+import {
+  handleLoginAsync,
+  selectLoginFormValues,
+  setMealForm,
+} from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "./Login.css";
 
@@ -64,7 +68,12 @@ function LoginPage(): JSX.Element {
                 }
               />
 
-              <MDBBtn className="mb-4 px-5" color="dark" size="lg">
+              <MDBBtn
+                className="mb-4 px-5"
+                color="dark"
+                size="lg"
+                onClick={() => dispatch(handleLoginAsync())}
+              >
                 Login
               </MDBBtn>
             </MDBCardBody>
