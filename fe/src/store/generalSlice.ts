@@ -9,7 +9,6 @@ type LoginFormValue = {
 type UserData = {
   email: string;
   type: string;
-  token: string;
 };
 
 export type generalSlice = {
@@ -36,6 +35,7 @@ const handleLogin = async (
     body: JSON.stringify(loginFormValue),
   });
   if (!response.ok) {
+    console.log("response", response);
     throw new Error("Login failed");
   }
   const userData = await response.json();

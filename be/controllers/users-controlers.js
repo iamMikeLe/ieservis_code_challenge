@@ -3,7 +3,6 @@ const login = async (req, res) => {
 
   if (email === "user@email.com" && password === "userPassword") {
     return res.json({
-      userId: "123456",
       email,
       type: "user",
     });
