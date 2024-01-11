@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { handleLogin } from "../API/userAPI";
 import { RootState } from "./store";
 
-type LoginFormValue = {
+export type LoginFormValue = {
   email: string;
   password: string;
 };
 
-type UserData = {
+export type UserData = {
   email: string;
   type: string;
 };
@@ -22,24 +23,6 @@ const initialState: generalSlice = {
     email: "",
     password: "",
   },
-};
-
-const handleLogin = async (
-  loginFormValue: LoginFormValue
-): Promise<UserData> => {
-  const response = await fetch("http://localhost:5000/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(loginFormValue),
-  });
-  if (!response.ok) {
-    console.log("response", response);
-    throw new Error("Login failed");
-  }
-  const userData = await response.json();
-  return userData;
 };
 
 export const handleLoginAsync = createAsyncThunk(
