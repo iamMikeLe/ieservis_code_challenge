@@ -1,6 +1,4 @@
-const HttpError = require("../models/http-error");
-
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (email === "user@email.com" && password === "userPassword") {
@@ -10,7 +8,14 @@ const login = async (req, res, next) => {
       type: "user",
     });
   }
-  return next(new HttpError("Invalid credentials", 401));
+
+  const errorResponse = {
+    status: "error",
+    statusCode: 401,
+    message: "Invalid credentials",
+  };
+
+  return res.status(401).json(errorResponse);
 };
 
 exports.login = login;

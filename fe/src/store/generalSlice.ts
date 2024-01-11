@@ -25,27 +25,28 @@ const initialState: generalSlice = {
   },
 };
 
-const handleLogin = (
-  seconds: number,
+const handleLogin = async (
   loginFormValue: LoginFormValue
 ): Promise<UserData> => {
-  return new Promise((resolve) => {
-    console.log("loginFormValue", loginFormValue);
-    setTimeout(() => {
-      resolve({
-        email: loginFormValue.email,
-        type: "user",
-        token: "fjaosgnoangoa",
-      });
-    }, seconds * 1000);
+  const response = await fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(loginFormValue),
   });
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+  const userData = await response.json();
+  return userData;
 };
 
 export const handleLoginAsync = createAsyncThunk(
   "general/handleLogin",
   async (loginFormValue: LoginFormValue) => {
     try {
-      const userData = await handleLogin(3, loginFormValue);
+      const userData = await handleLogin(loginFormValue);
       console.log(userData);
       return userData;
     } catch (error) {
