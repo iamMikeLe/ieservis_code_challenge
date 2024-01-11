@@ -8,11 +8,16 @@ import {
   MDBInput,
   MDBRow,
 } from "mdb-react-ui-kit";
-import pc from "../../assets/images/pc.jpg";
 
+import pc from "../../assets/images/pc.jpg";
+import { selectLoginFormValues, setMealForm } from "../../store/generalSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "./Login.css";
 
 function LoginPage(): JSX.Element {
+  const { email, password } = useAppSelector(selectLoginFormValues);
+  const dispatch = useAppDispatch();
+
   return (
     <MDBContainer className="my-5" data-testid="login-page">
       <MDBCard>
@@ -37,16 +42,26 @@ function LoginPage(): JSX.Element {
               <MDBInput
                 wrapperClass="mb-4"
                 label="Email address"
-                id="formControlLg"
+                id="email"
                 type="email"
                 size="lg"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setMealForm({ key: "email", value: e.target.value }))
+                }
               />
               <MDBInput
                 wrapperClass="mb-4"
                 label="Password"
-                id="formControlLg"
+                id="password"
                 type="password"
                 size="lg"
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setMealForm({ key: "password", value: e.target.value })
+                  )
+                }
               />
 
               <MDBBtn className="mb-4 px-5" color="dark" size="lg">
