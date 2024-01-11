@@ -72,7 +72,7 @@ function LoginPage(): JSX.Element {
                 className="mb-4 px-5"
                 color="dark"
                 size="lg"
-                onClick={() => dispatch(handleLoginAsync())}
+                onClick={() => dispatch(handleLoginAsync({ email, password }))}
               >
                 Login
               </MDBBtn>

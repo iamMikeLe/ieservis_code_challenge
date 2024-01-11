@@ -14,31 +14,40 @@ type UserData = {
 
 export type generalSlice = {
   loginFormValues: LoginFormValue;
-  userData: UserData | null;
+  userData: UserData | null | object;
 };
 
 const initialState: generalSlice = {
-  userData: null,
+  userData: {},
   loginFormValues: {
     email: "",
     password: "",
   },
 };
 
-const handleLogin = (seconds: number): Promise<string> => {
+const handleLogin = (
+  seconds: number,
+  loginFormValue: LoginFormValue
+): Promise<UserData> => {
   return new Promise((resolve) => {
+    console.log("loginFormValue", loginFormValue);
     setTimeout(() => {
-      resolve("dummy Login success");
+      resolve({
+        email: loginFormValue.email,
+        type: "user",
+        token: "fjaosgnoangoa",
+      });
     }, seconds * 1000);
   });
 };
 
 export const handleLoginAsync = createAsyncThunk(
   "general/handleLogin",
-  async () => {
+  async (loginFormValue: LoginFormValue) => {
     try {
-      const result = await handleLogin(3);
-      console.log(result);
+      const userData = await handleLogin(3, loginFormValue);
+      console.log(userData);
+      return userData;
     } catch (error) {
       console.log("handle error in future, toast or sth", error);
       throw error;
@@ -59,22 +68,23 @@ export const generalSlice = createSlice({
     ) => {
       state.loginFormValues[action.payload.key] = action.payload.value;
     },
-    extraReducers: (builder) => {
-      builder
-        .addCase(handleLoginAsync.pending, (state) => {
-          // resetting state to trigger loading
-          state.userData = null;
-        })
-        .addCase(
-          handleLoginAsync.fulfilled,
-          (state, action: PayloadAction<UserData>) => {
-            state.userData = action.payload;
-          }
-        )
-        .addCase(handleLoginAsync.rejected, (state) => {
-          state.userData = [];
-        });
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(handleLoginAsync.pending, (state) => {
+        // resetting state to trigger loading
+        state.userData = null;
+      })
+      .addCase(
+        handleLoginAsync.fulfilled,
+        (state, action: PayloadAction<UserData>) => {
+          console.log("action", action);
+          state.userData = action.payload;
+        }
+      )
+      .addCase(handleLoginAsync.rejected, (state) => {
+        state.userData = {};
+      });
   },
 });
 
