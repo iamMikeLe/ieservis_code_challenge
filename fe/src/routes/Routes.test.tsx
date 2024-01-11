@@ -1,13 +1,34 @@
-import { render, screen } from "@testing-library/react";
+import { render as rtlRender, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import configureMockStore from "redux-mock-store";
 import App from "../App";
 
+const mockStore = configureMockStore();
+const store = mockStore({
+  general: {
+    loginFormValues: {
+      email: "",
+      password: "",
+    },
+  },
+});
+
+function customRender(ui: React.ReactElement, { route = "/" } = {}) {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[route]}>{children}</MemoryRouter>
+      </Provider>
+    );
+  }
+  return rtlRender(ui, { wrapper: Wrapper });
+}
+
+// ------------------------------
+
 test("renders Admin login page on /admin/login", () => {
-  render(
-    <MemoryRouter initialEntries={["/admin/login"]}>
-      <App />
-    </MemoryRouter>
-  );
+  customRender(<App />, { route: "/admin/login" });
 
   const loginElement = screen.getByTestId("admin-login");
   expect(loginElement).toBeInTheDocument();
@@ -16,11 +37,7 @@ test("renders Admin login page on /admin/login", () => {
 // ------------------------------
 
 test("renders login page on /login", () => {
-  render(
-    <MemoryRouter initialEntries={["/login"]}>
-      <App />
-    </MemoryRouter>
-  );
+  customRender(<App />, { route: "/login" });
 
   const loginElement = screen.getByTestId("login-page");
   expect(loginElement).toBeInTheDocument();
@@ -29,11 +46,7 @@ test("renders login page on /login", () => {
 // ------------------------------
 
 test("Redirects to login page on /", () => {
-  render(
-    <MemoryRouter initialEntries={["/"]}>
-      <App />
-    </MemoryRouter>
-  );
+  customRender(<App />, { route: "/" });
 
   const loginElement = screen.getByTestId("login-page");
   expect(loginElement).toBeInTheDocument();
@@ -42,11 +55,7 @@ test("Redirects to login page on /", () => {
 // ------------------------------
 
 test("renders ImgToPdf page on /images-to-pdf", () => {
-  render(
-    <MemoryRouter initialEntries={["/images-to-pdf"]}>
-      <App />
-    </MemoryRouter>
-  );
+  customRender(<App />, { route: "/images-to-pdf" });
 
   const loginElement = screen.getByTestId("img-to-pdf-page");
   expect(loginElement).toBeInTheDocument();
@@ -55,11 +64,7 @@ test("renders ImgToPdf page on /images-to-pdf", () => {
 // ------------------------------
 
 test("renders error page on invalid route", () => {
-  render(
-    <MemoryRouter initialEntries={["/someInvalid-route"]}>
-      <App />
-    </MemoryRouter>
-  );
+  customRender(<App />, { route: "/someInvalid-route" });
 
   const loginElement = screen.getByTestId("error-page");
   expect(loginElement).toBeInTheDocument();
