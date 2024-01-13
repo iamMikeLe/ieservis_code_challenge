@@ -24,3 +24,7 @@ body {
     rgba(194, 233, 251, 1)
   );
 }
+
+.nav-link {
+  cursor: pointer;
+}
