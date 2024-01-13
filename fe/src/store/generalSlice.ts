@@ -76,5 +76,6 @@ export const { setMealForm } = generalSlice.actions;
 
 export const selectLoginFormValues = (state: RootState) =>
   state.general.loginFormValues;
+export const selectUserData = (state: RootState) => state.general.userData;
 
 export default generalSlice.reducer;

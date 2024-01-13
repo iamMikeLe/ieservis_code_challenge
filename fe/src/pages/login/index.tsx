@@ -8,11 +8,15 @@ import {
   MDBInput,
   MDBRow,
 } from "mdb-react-ui-kit";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import pc from "../../assets/images/pc.jpg";
 import {
+  UserData,
   handleLoginAsync,
   selectLoginFormValues,
+  selectUserData,
   setMealForm,
 } from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -20,7 +24,15 @@ import "./Login.css";
 
 function LoginPage(): JSX.Element {
   const { email, password } = useAppSelector(selectLoginFormValues);
+  const navigate = useNavigate();
+  const userData = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if ((userData as UserData)?.type === "user") {
+      navigate("/images-to-pdf");
+    }
+  }, [userData, navigate]);
 
   return (
     <MDBContainer className="my-5" data-testid="login-page">

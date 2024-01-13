@@ -3,14 +3,22 @@ import AdminLogin from "../pages/adminLogin";
 import ErrorPage from "../pages/errorPage";
 import ImgToPdf from "../pages/imgToPdf";
 import LoginPage from "../pages/login";
+import { UserData, selectUserData } from "../store/generalSlice";
+import { useAppSelector } from "../store/hooks";
 
 function Routes() {
+  const userData = useAppSelector(selectUserData) as UserData;
+  const userTypeExists = userData ? Boolean(userData.type) : false;
+
   return (
     <Switch>
-      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/images-to-pdf" element={<ImgToPdf />} />
+      {userTypeExists ? (
+        <Route path="/images-to-pdf" element={<ImgToPdf />} />
+      ) : (
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      )}
       <Route path="*" element={<ErrorPage />} />
     </Switch>
   );
