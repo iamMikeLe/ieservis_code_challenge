@@ -10,11 +10,13 @@ export type UserData = {
 };
 
 export type generalSlice = {
-  userData: UserData | null | object;
+  userData: UserData | null;
+  loading: boolean;
 };
 
 const initialState: generalSlice = {
-  userData: {},
+  userData: null,
+  loading: false,
 };
 
 export const handleLoginAsync = createAsyncThunk(
@@ -45,21 +47,22 @@ export const generalSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(handleLoginAsync.pending, (state) => {
-        // resetting state to trigger loading
-        state.userData = null;
+        state.loading = true;
       })
       .addCase(
         handleLoginAsync.fulfilled,
         (state, action: PayloadAction<UserData>) => {
           state.userData = action.payload;
+          state.loading = false;
         }
       )
       .addCase(handleLoginAsync.rejected, (state) => {
-        state.userData = {};
+        state.loading = false;
       });
   },
 });
 
 export const selectUserData = (state: RootState) => state.general.userData;
+export const isUserDataLoading = (state: RootState) => state.general.loading;
 
 export default generalSlice.reducer;
