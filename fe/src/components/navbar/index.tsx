@@ -13,6 +13,13 @@ import { Link, NavLink } from "react-router-dom";
 export default function App() {
   const [openNavText, setOpenNavText] = useState(false);
 
+  const routes = [
+    { path: "/", name: "Home" },
+    { path: "/login", name: "Login" },
+    { path: "/admin/login", name: "Admin" },
+    { path: "/images-to-pdf", name: "Converter" },
+  ];
+
   return (
     <MDBNavbar expand="lg" light bgColor="light">
       <MDBContainer fluid>
@@ -31,26 +38,13 @@ export default function App() {
         </MDBNavbarToggler>
         <MDBCollapse navbar open={openNavText}>
           <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-            <MDBNavbarItem>
-              <NavLink className="nav-link" to="/">
-                Home
-              </NavLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem>
-              <NavLink className="nav-link" to="/login">
-                Login
-              </NavLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem>
-              <NavLink className="nav-link" to="/admin/login">
-                Admin
-              </NavLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem>
-              <NavLink className="nav-link" to="/images-to-pdf">
-                Converter
-              </NavLink>
-            </MDBNavbarItem>
+            {routes.map((route) => (
+              <MDBNavbarItem key={route.path}>
+                <NavLink className="nav-link" to={route.path}>
+                  {route.name}
+                </NavLink>
+              </MDBNavbarItem>
+            ))}
           </MDBNavbarNav>
           <div className="nav-link" onClick={() => console.log("logout")}>
             logout
