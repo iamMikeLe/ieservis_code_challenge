@@ -44,7 +44,11 @@ export const handleLoginAsync = createAsyncThunk(
 export const generalSlice = createSlice({
   name: "general",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUserData: (state) => {
+      state.userData = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(handleLoginAsync.pending, (state) => {
@@ -62,6 +66,7 @@ export const generalSlice = createSlice({
       });
   },
 });
+export const { clearUserData } = generalSlice.actions;
 
 export const selectUserData = (state: RootState) => state.general.userData;
 export const isUserDataLoading = (state: RootState) => state.general.loading;
