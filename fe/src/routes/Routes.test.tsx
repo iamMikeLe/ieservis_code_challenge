@@ -1,4 +1,4 @@
-import { render as rtlRender, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureMockStore from "redux-mock-store";
@@ -7,6 +7,9 @@ import App from "../App";
 const mockStore = configureMockStore();
 const store = mockStore({
   general: {
+    userData: {},
+  },
+  login: {
     loginFormValues: {
       email: "",
       password: "",
@@ -22,7 +25,7 @@ function customRender(ui: React.ReactElement, { route = "/" } = {}) {
       </Provider>
     );
   }
-  return rtlRender(ui, { wrapper: Wrapper });
+  return render(ui, { wrapper: Wrapper });
 }
 
 // ------------------------------
@@ -55,7 +58,21 @@ test("Redirects to login page on /", () => {
 // ------------------------------
 
 test("renders ImgToPdf page on /images-to-pdf", () => {
-  customRender(<App />, { route: "/images-to-pdf" });
+  const store = mockStore({
+    general: {
+      userData: {
+        type: "user",
+      },
+    },
+  });
+
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={["/images-to-pdf"]}>
+        <App />
+      </MemoryRouter>
+    </Provider>
+  );
 
   const loginElement = screen.getByTestId("img-to-pdf-page");
   expect(loginElement).toBeInTheDocument();
@@ -64,7 +81,20 @@ test("renders ImgToPdf page on /images-to-pdf", () => {
 // ------------------------------
 
 test("renders error page on invalid route", () => {
-  customRender(<App />, { route: "/someInvalid-route" });
+  const store = mockStore({
+    general: {
+      userData: {
+        type: "user",
+      },
+    },
+  });
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={["/someInvalid-route"]}>
+        <App />
+      </MemoryRouter>
+    </Provider>
+  );
 
   const loginElement = screen.getByTestId("error-page");
   expect(loginElement).toBeInTheDocument();

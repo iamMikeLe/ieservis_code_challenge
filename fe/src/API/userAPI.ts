@@ -1,4 +1,5 @@
-import { LoginFormValue, UserData } from "../store/generalSlice";
+import { LoginFormValue } from "../pages/login/loginSlice";
+import { UserData } from "../store/generalSlice";
 
 export const handleLogin = async (
   loginFormValue: LoginFormValue
