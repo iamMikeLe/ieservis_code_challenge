@@ -24,6 +24,7 @@ export const handleLoginAsync = createAsyncThunk(
   async (loginFormValue: LoginFormValue, { rejectWithValue }) => {
     try {
       const userDataPromise = handleLogin(loginFormValue);
+      toast.dismiss();
       toast.promise(userDataPromise, {
         loading: "Logging in...",
         success: (data) => `Logged in as ${data.email}`,
