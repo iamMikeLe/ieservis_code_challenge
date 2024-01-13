@@ -11,8 +11,9 @@ export const handleLogin = async (
     },
     body: JSON.stringify(loginFormValue),
   });
+
   if (!response.ok) {
-    throw new Error("Login failed");
+    throw new Error(response.statusText);
   }
   const userData = await response.json();
   return userData;

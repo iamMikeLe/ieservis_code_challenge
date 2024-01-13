@@ -5,7 +5,6 @@ import {
   MDBCardImage,
   MDBCol,
   MDBContainer,
-  MDBIcon,
   MDBInput,
   MDBRow,
 } from "mdb-react-ui-kit";
@@ -92,7 +91,7 @@ function LoginPage(): JSX.Element {
                 disabled={loading}
                 onClick={() => dispatch(handleLoginAsync({ email, password }))}
               >
-                Login {loading && <MDBIcon icon="spinner" spin />}
+                Login
               </MDBBtn>
             </MDBCardBody>
           </MDBCol>
