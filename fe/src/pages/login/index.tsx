@@ -11,6 +11,7 @@ import {
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { loginValidation } from "../../Utils/loginValidation";
 import pc from "../../assets/images/pc.jpg";
 import {
   UserData,
@@ -37,6 +38,12 @@ function LoginPage(): JSX.Element {
       navigate("/images-to-pdf");
     }
   }, [userData, navigate]);
+
+  const handleLogin = () => {
+    const isLoginValid = loginValidation(email, password);
+    if (!isLoginValid) return;
+    dispatch(handleLoginAsync({ email, password }));
+  };
 
   return (
     <MDBContainer className="my-5" data-testid="login-page">
@@ -89,7 +96,7 @@ function LoginPage(): JSX.Element {
                 color="dark"
                 size="lg"
                 disabled={loading}
-                onClick={() => dispatch(handleLoginAsync({ email, password }))}
+                onClick={handleLogin}
               >
                 Login
               </MDBBtn>
