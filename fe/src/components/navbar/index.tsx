@@ -18,10 +18,25 @@ export default function App() {
   const dispatch = useAppDispatch();
 
   const routes = [
-    { path: "/", name: "Home", permitted: true },
-    { path: "/login", name: "Login", permitted: !userData },
-    { path: "/admin/login", name: "Admin", permitted: !userData },
-    { path: "/images-to-pdf", name: "Converter", permitted: !!userData },
+    { path: "/", name: "Home", permitted: true, testId: "home-nav" },
+    {
+      path: "/login",
+      name: "Login",
+      permitted: !userData,
+      testId: "login-nav",
+    },
+    {
+      path: "/admin/login",
+      name: "Admin",
+      permitted: !userData,
+      testId: "admin-login-nav",
+    },
+    {
+      path: "/images-to-pdf",
+      name: "Converter",
+      permitted: !!userData,
+      testId: "converter-nav",
+    },
   ];
 
   return (
@@ -46,7 +61,11 @@ export default function App() {
               (route) =>
                 route.permitted && (
                   <MDBNavbarItem key={route.path}>
-                    <NavLink className="nav-link" to={route.path}>
+                    <NavLink
+                      data-testid={route.testId}
+                      className="nav-link"
+                      to={route.path}
+                    >
                       {route.name}
                     </NavLink>
                   </MDBNavbarItem>
@@ -54,7 +73,11 @@ export default function App() {
             )}
           </MDBNavbarNav>
           {userData && (
-            <div className="nav-link" onClick={() => dispatch(clearUserData())}>
+            <div
+              className="nav-link"
+              onClick={() => dispatch(clearUserData())}
+              data-testid="logout"
+            >
               logout
             </div>
           )}

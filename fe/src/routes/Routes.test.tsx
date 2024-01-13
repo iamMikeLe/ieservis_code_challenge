@@ -31,66 +31,66 @@ function renderWithStoreAndRouter(
   );
 }
 
-describe("Route tests while not logged in", () => {
-  test("renders intro page on / route", () => {
+describe("When not logged in", () => {
+  test("it renders intro page on / route", () => {
     renderWithStoreAndRouter({ type: "" }, "/");
-    const loginElement = screen.getByTestId("intro");
-    expect(loginElement).toBeInTheDocument();
+    const introPageDiv = screen.getByTestId("intro");
+    expect(introPageDiv).toBeInTheDocument();
   });
 
-  test("renders login page on /login route", () => {
+  test("it renders login page on /login route", () => {
     renderWithStoreAndRouter({ type: "" }, "/login");
-    const loginElement = screen.getByTestId("login-page");
-    expect(loginElement).toBeInTheDocument();
+    const loginPageDiv = screen.getByTestId("login-page");
+    expect(loginPageDiv).toBeInTheDocument();
   });
 
-  test("renders Admin login page on /admin/login route", () => {
+  test("it renders Admin login page on /admin/login route", () => {
     renderWithStoreAndRouter({ type: "" }, "/admin/login");
-    const loginElement = screen.getByTestId("admin-login");
-    expect(loginElement).toBeInTheDocument();
+    const adminLoginPageDiv = screen.getByTestId("admin-login");
+    expect(adminLoginPageDiv).toBeInTheDocument();
   });
 
-  test("renders login page on /images-to-pdf route", () => {
+  test("it renders login page on /images-to-pdf route", () => {
     renderWithStoreAndRouter({ type: "" }, "/images-to-pdf");
-    const loginElement = screen.getByTestId("login-page");
-    expect(loginElement).toBeInTheDocument();
+    const loginPageDiv = screen.getByTestId("login-page");
+    expect(loginPageDiv).toBeInTheDocument();
   });
 
-  test("renders login page on invalid route", () => {
+  test("it renders login page on invalid route", () => {
     renderWithStoreAndRouter({ type: "" }, "/someInvalid-route");
-    const loginElement = screen.getByTestId("login-page");
-    expect(loginElement).toBeInTheDocument();
+    const loginPageDiv = screen.getByTestId("login-page");
+    expect(loginPageDiv).toBeInTheDocument();
   });
 });
 
-describe("Route tests while logged in as user", () => {
-  test("renders intro page on / route", () => {
+describe("When logged in as user", () => {
+  test("it renders intro page on / route", () => {
     renderWithStoreAndRouter({ type: "user" }, "/");
-    const loginElement = screen.getByTestId("intro");
-    expect(loginElement).toBeInTheDocument();
+    const introPageDiv = screen.getByTestId("intro");
+    expect(introPageDiv).toBeInTheDocument();
   });
 
-  test("renders images-to-pdf page on /login route", () => {
+  test("it renders images-to-pdf page on /login route", () => {
     renderWithStoreAndRouter({ type: "user" }, "/login");
-    const loginElement = screen.getByTestId("img-to-pdf-page");
-    expect(loginElement).toBeInTheDocument();
+    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
+    expect(converterPageDiv).toBeInTheDocument();
   });
 
-  test("renders Admin login page on /admin/login route", () => {
+  test("it renders Admin login page on /admin/login route", () => {
     renderWithStoreAndRouter({ type: "user" }, "/admin/login");
-    const loginElement = screen.getByTestId("admin-login");
-    expect(loginElement).toBeInTheDocument();
+    const adminLoginPageDiv = screen.getByTestId("admin-login");
+    expect(adminLoginPageDiv).toBeInTheDocument();
   });
 
-  test("renders images-to-pdf page on /images-to-pdf route", () => {
+  test("it renders images-to-pdf page on /images-to-pdf route", () => {
     renderWithStoreAndRouter({ type: "user" }, "/images-to-pdf");
-    const loginElement = screen.getByTestId("img-to-pdf-page");
-    expect(loginElement).toBeInTheDocument();
+    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
+    expect(converterPageDiv).toBeInTheDocument();
   });
 
-  test("renders error page on invalid route", () => {
+  test("it renders error page on invalid route", () => {
     renderWithStoreAndRouter({ type: "user" }, "/someInvalid-route");
-    const loginElement = screen.getByTestId("error-page");
-    expect(loginElement).toBeInTheDocument();
+    const errorPageDiv = screen.getByTestId("error-page");
+    expect(errorPageDiv).toBeInTheDocument();
   });
 });
