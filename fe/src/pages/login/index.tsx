@@ -5,6 +5,7 @@ import {
   MDBCardImage,
   MDBCol,
   MDBContainer,
+  MDBIcon,
   MDBInput,
   MDBRow,
 } from "mdb-react-ui-kit";
@@ -19,10 +20,15 @@ import {
 } from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "./Login.css";
-import { selectLoginFormValues, setMealForm } from "./loginSlice";
+import {
+  isLoginLoading,
+  selectLoginFormValues,
+  setMealForm,
+} from "./loginSlice";
 
 function LoginPage(): JSX.Element {
   const { email, password } = useAppSelector(selectLoginFormValues);
+  const loading = useAppSelector(isLoginLoading);
   const navigate = useNavigate();
   const userData = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
@@ -83,9 +89,10 @@ function LoginPage(): JSX.Element {
                 className="mb-4 px-5"
                 color="dark"
                 size="lg"
+                disabled={loading}
                 onClick={() => dispatch(handleLoginAsync({ email, password }))}
               >
-                Login
+                Login {loading && <MDBIcon icon="spinner" spin />}
               </MDBBtn>
             </MDBCardBody>
           </MDBCol>

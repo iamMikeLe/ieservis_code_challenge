@@ -21,7 +21,6 @@ export const handleLoginAsync = createAsyncThunk(
   async (loginFormValue: LoginFormValue) => {
     try {
       const userData = await handleLogin(loginFormValue);
-      console.log(userData);
       return userData;
     } catch (error) {
       console.log("handle error in future, toast or sth", error);
@@ -43,7 +42,6 @@ export const generalSlice = createSlice({
       .addCase(
         handleLoginAsync.fulfilled,
         (state, action: PayloadAction<UserData>) => {
-          console.log("action", action);
           state.userData = action.payload;
         }
       )
