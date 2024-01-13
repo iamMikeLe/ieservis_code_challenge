@@ -2,8 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import App from "../../App";
-import { setMealForm } from "../../store/generalSlice"; // import the action creator
+
 import { store } from "../../store/store";
+import { setMealForm } from "./loginSlice";
 
 test("input value reflects state update", () => {
   store.dispatch(setMealForm({ key: "email", value: "test@example.com" }));

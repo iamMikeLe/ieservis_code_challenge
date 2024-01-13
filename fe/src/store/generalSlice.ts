@@ -1,11 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { handleLogin } from "../API/userAPI";
+import { LoginFormValue } from "../pages/login/loginSlice";
 import { RootState } from "./store";
-
-export type LoginFormValue = {
-  email: string;
-  password: string;
-};
 
 export type UserData = {
   email: string;
@@ -13,16 +9,11 @@ export type UserData = {
 };
 
 export type generalSlice = {
-  loginFormValues: LoginFormValue;
   userData: UserData | null | object;
 };
 
 const initialState: generalSlice = {
   userData: {},
-  loginFormValues: {
-    email: "",
-    password: "",
-  },
 };
 
 export const handleLoginAsync = createAsyncThunk(
@@ -42,17 +33,7 @@ export const handleLoginAsync = createAsyncThunk(
 export const generalSlice = createSlice({
   name: "general",
   initialState,
-  reducers: {
-    setMealForm: (
-      state,
-      action: PayloadAction<{
-        key: keyof LoginFormValue;
-        value: string;
-      }>
-    ) => {
-      state.loginFormValues[action.payload.key] = action.payload.value;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(handleLoginAsync.pending, (state) => {
@@ -72,10 +53,6 @@ export const generalSlice = createSlice({
   },
 });
 
-export const { setMealForm } = generalSlice.actions;
-
-export const selectLoginFormValues = (state: RootState) =>
-  state.general.loginFormValues;
 export const selectUserData = (state: RootState) => state.general.userData;
 
 export default generalSlice.reducer;

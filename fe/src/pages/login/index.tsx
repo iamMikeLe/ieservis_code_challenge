@@ -15,12 +15,11 @@ import pc from "../../assets/images/pc.jpg";
 import {
   UserData,
   handleLoginAsync,
-  selectLoginFormValues,
   selectUserData,
-  setMealForm,
 } from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "./Login.css";
+import { selectLoginFormValues, setMealForm } from "./loginSlice";
 
 function LoginPage(): JSX.Element {
   const { email, password } = useAppSelector(selectLoginFormValues);
