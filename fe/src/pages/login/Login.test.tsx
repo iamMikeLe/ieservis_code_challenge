@@ -3,23 +3,61 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import App from "../../App";
 
+import { setMaintenance } from "../../store/generalSlice";
 import { store } from "../../store/store";
 import { setMealForm } from "./loginSlice";
 
-test("input value reflects state update", () => {
-  store.dispatch(setMealForm({ key: "email", value: "test@example.com" }));
-  store.dispatch(setMealForm({ key: "password", value: "123456Asd" }));
+describe("When not logged in", () => {
+  beforeEach(() => {
+    store.dispatch(setMealForm({ key: "email", value: "test@example.com" }));
+    store.dispatch(setMealForm({ key: "password", value: "123456Asd" }));
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/login"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+  });
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={["/login"]}>
-        <App />
-      </MemoryRouter>
-    </Provider>
-  );
+  test("input value reflects state update", () => {
+    const emailInput = screen.getByLabelText(
+      "Email address"
+    ) as HTMLInputElement;
+    expect(emailInput.value).toBe("test@example.com");
+    const passwordInput = screen.getByLabelText("Password") as HTMLInputElement;
+    expect(passwordInput.value).toBe("123456Asd");
+  });
+});
 
-  const emailInput = screen.getByLabelText("Email address") as HTMLInputElement;
-  expect(emailInput.value).toBe("test@example.com");
-  const passwordInput = screen.getByLabelText("Password") as HTMLInputElement;
-  expect(passwordInput.value).toBe("123456Asd");
+describe("When under maintenance", () => {
+  beforeEach(() => {
+    store.dispatch(setMaintenance(true));
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/login"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+  });
+  test("it should render maintenance component", () => {
+    const maintenanceElement = screen.getByTestId("maintenance");
+    expect(maintenanceElement).toBeInTheDocument();
+  });
+
+  test("it should disable email input", () => {
+    const loginButton = screen.getByTestId("login-button");
+    expect(loginButton).toBeDisabled();
+  });
+
+  test("it should disable password input", () => {
+    const emailInput = screen.getByTestId("email-input");
+    expect(emailInput).toBeDisabled();
+  });
+
+  test("it should disable login button", () => {
+    const passwordInput = screen.getByTestId("password-input");
+    expect(passwordInput).toBeDisabled();
+  });
 });

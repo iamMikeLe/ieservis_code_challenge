@@ -12,9 +12,11 @@ export type UserData = {
 export type generalSlice = {
   userData: UserData | null;
   loading: boolean;
+  maintenance: boolean;
 };
 
 const initialState: generalSlice = {
+  maintenance: true,
   userData: null,
   loading: false,
 };
@@ -51,6 +53,9 @@ export const generalSlice = createSlice({
     setUserData: (state, action: PayloadAction<UserData>) => {
       state.userData = action.payload;
     },
+    setMaintenance: (state, action: PayloadAction<boolean>) => {
+      state.maintenance = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,9 +74,12 @@ export const generalSlice = createSlice({
       });
   },
 });
-export const { clearUserData, setUserData } = generalSlice.actions;
+export const { clearUserData, setUserData, setMaintenance } =
+  generalSlice.actions;
 
 export const selectUserData = (state: RootState) => state.general.userData;
 export const isUserDataLoading = (state: RootState) => state.general.loading;
+export const selectMaintenance = (state: RootState) =>
+  state.general.maintenance;
 
 export default generalSlice.reducer;

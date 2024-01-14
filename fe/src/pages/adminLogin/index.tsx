@@ -10,8 +10,6 @@ import {
 } from "mdb-react-ui-kit";
 import pc from "../../assets/images/pc.jpg";
 
-import "../login/Login.css";
-
 function AdminLogin(): JSX.Element {
   return (
     <MDBContainer className="my-5" data-testid="admin-login">
