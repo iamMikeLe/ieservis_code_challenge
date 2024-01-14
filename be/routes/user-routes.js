@@ -5,11 +5,6 @@ const maintenanceControler = require("../controllers/maintenance-controler");
 
 const { userLogin, maintenance } = require("../utils/form-validation");
 
-router.get("/", (_req, res) => {
-  console.log("GET Request in /user");
-  res.json({ message: "dummy response" });
-});
-
 /**
  * GET REQUEST - to get maintenance status
  *  route: /maintenance
