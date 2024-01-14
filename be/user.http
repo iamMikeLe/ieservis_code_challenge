@@ -5,3 +5,43 @@ content-type: application/json
     "email": "user@email.com",
     "password": "userPassword"
 }
+
+###
+
+POST http://localhost:5000/admin/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "admin@email.com",
+    "password": "adminPassword"
+}
+
+###
+
+POST http://localhost:5000/admin/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "user@email.com",
+    "password": "userPassword"
+}
+
+
+###
+
+POST http://localhost:5000/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "admin@email.com",
+    "password": "adminPassword"
+}
+
+###
+POST http://localhost:5000/set-maintenance HTTP/1.1
+content-type: application/json
+
+{
+    "isUnderMaintenance": "false"
+}
+
