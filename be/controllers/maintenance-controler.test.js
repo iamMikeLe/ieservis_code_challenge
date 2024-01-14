@@ -16,7 +16,7 @@ describe("GET /maintenance", () => {
     const response = await request(app).get("/maintenance");
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty("isUnderMaintenance");
+    expect(typeof response.body).toBe("boolean");
   });
 });
 

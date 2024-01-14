@@ -11,15 +11,16 @@ import {
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { getMaintenanceStatus } from "../../API/userAPI";
 import { loginValidation } from "../../Utils/loginValidation";
 import pc from "../../assets/images/pc.jpg";
 import Maintenance from "../../components/maintenance";
 import {
   UserData,
-  fetchMaintenanceStatus,
   handleLoginAsync,
   selectMaintenance,
   selectUserData,
+  setMaintenance,
 } from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -43,7 +44,9 @@ function LoginPage(): JSX.Element {
   }, [userData, navigate]);
 
   useEffect(() => {
-    dispatch(fetchMaintenanceStatus());
+    getMaintenanceStatus().then((isUnderMaintenance) =>
+      dispatch(setMaintenance(isUnderMaintenance))
+    );
   }, [dispatch]);
 
   const handleLogin = () => {
@@ -52,7 +55,6 @@ function LoginPage(): JSX.Element {
     dispatch(handleLoginAsync({ email, password }));
   };
 
-  console.log("isUnderMaintenance", isUnderMaintenance);
   return (
     <MDBContainer className="my-5" data-testid="login-page">
       {isUnderMaintenance && <Maintenance />}

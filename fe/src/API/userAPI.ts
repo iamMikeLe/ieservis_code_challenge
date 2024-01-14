@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
 
@@ -25,6 +26,8 @@ export const getMaintenanceStatus = async (): Promise<boolean> => {
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
+    toast.dismiss();
+    toast.error(`Error: ${axiosError.message || "Unknown error"}`);
     throw new Error(axiosError.response?.statusText || "Unknown error");
   }
 };

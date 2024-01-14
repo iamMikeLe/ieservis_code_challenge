@@ -4,7 +4,7 @@ const fs = require("fs").promises;
 const getMaintenanceStatus = async (_req, res) => {
   let maintenance = await fs.readFile("maintenance.txt", "utf8");
   maintenance = maintenance.trim() === "true";
-  res.json({ isUnderMaintenance: maintenance });
+  res.json(maintenance);
 };
 
 const setMaintenanceStatus = async (req, res) => {
