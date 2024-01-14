@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { handleLogin } from "../API/userAPI";
+import { getMaintenanceStatus, handleLogin } from "../API/userAPI";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { RootState } from "./store";
 
@@ -43,6 +44,20 @@ export const handleLoginAsync = createAsyncThunk(
   }
 );
 
+export const fetchMaintenanceStatus = createAsyncThunk(
+  "general/fetchMaintenanceStatus",
+  async (_, { rejectWithValue }) => {
+    try {
+      const status = await getMaintenanceStatus();
+      return status;
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(`Error: ${err.message || "Unknown error"}`);
+      return rejectWithValue(err.message || "Unknown error");
+    }
+  }
+);
+
 export const generalSlice = createSlice({
   name: "general",
   initialState,
@@ -72,6 +87,13 @@ export const generalSlice = createSlice({
       .addCase(handleLoginAsync.rejected, (state) => {
         state.loading = false;
       });
+
+    builder.addCase(
+      fetchMaintenanceStatus.fulfilled,
+      (state, action: PayloadAction<boolean>) => {
+        state.maintenance = action.payload;
+      }
+    );
   },
 });
 export const { clearUserData, setUserData, setMaintenance } =

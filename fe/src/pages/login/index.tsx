@@ -16,6 +16,7 @@ import pc from "../../assets/images/pc.jpg";
 import Maintenance from "../../components/maintenance";
 import {
   UserData,
+  fetchMaintenanceStatus,
   handleLoginAsync,
   selectMaintenance,
   selectUserData,
@@ -41,12 +42,17 @@ function LoginPage(): JSX.Element {
     }
   }, [userData, navigate]);
 
+  useEffect(() => {
+    dispatch(fetchMaintenanceStatus());
+  }, [dispatch]);
+
   const handleLogin = () => {
     const isLoginValid = loginValidation(email, password);
     if (!isLoginValid) return;
     dispatch(handleLoginAsync({ email, password }));
   };
 
+  console.log("isUnderMaintenance", isUnderMaintenance);
   return (
     <MDBContainer className="my-5" data-testid="login-page">
       {isUnderMaintenance && <Maintenance />}

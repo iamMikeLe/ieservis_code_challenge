@@ -16,3 +16,15 @@ export const handleLogin = async (
     throw new Error(axiosError.response?.statusText || "Unknown error");
   }
 };
+
+export const getMaintenanceStatus = async (): Promise<boolean> => {
+  try {
+    const response = await axios.get<boolean>(
+      `${import.meta.env.VITE_API_URL}/maintenance`
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    throw new Error(axiosError.response?.statusText || "Unknown error");
+  }
+};

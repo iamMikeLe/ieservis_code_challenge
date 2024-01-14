@@ -4,6 +4,10 @@ import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import App from "../App";
 
+jest.mock("../API/userAPI", () => ({
+  fetchMaintenanceStatus: jest.fn().mockReturnValue({ type: "mockedAction" }),
+}));
+
 const mockStore = configureStore([]);
 
 function renderWithStoreAndRouter(
