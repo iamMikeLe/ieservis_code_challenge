@@ -3,7 +3,8 @@ const getUserByEmail = require("../utils/helper");
 
 const authenticateUser = async (req, res, userType) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.send({ errors: result.array() });
+  if (!result.isEmpty())
+    return res.status(401).send({ errors: result.array() });
 
   const { email, password } = req.body;
   const user = getUserByEmail(email);

@@ -9,7 +9,8 @@ const getMaintenanceStatus = async (_req, res) => {
 
 const setMaintenanceStatus = async (req, res) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.send({ errors: result.array() });
+  if (!result.isEmpty())
+    return res.status(400).send({ errors: result.array() });
 
   const maintenance = req.body.isUnderMaintenance;
   await fs.writeFile("maintenance.txt", maintenance.toString());
