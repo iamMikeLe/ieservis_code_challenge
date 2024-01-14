@@ -16,7 +16,7 @@ export type generalSlice = {
 };
 
 const initialState: generalSlice = {
-  maintenance: true,
+  maintenance: false,
   userData: null,
   loading: false,
 };
