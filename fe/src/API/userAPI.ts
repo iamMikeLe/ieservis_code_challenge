@@ -1,28 +1,19 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, Method } from "axios";
 import toast from "react-hot-toast";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
 
-export const handleLogin = async (
-  loginFormValue: LoginFormValue
-): Promise<UserData> => {
+const apiRequest = async <T>(
+  method: Method,
+  endpoint: string,
+  data?: unknown
+): Promise<T> => {
   try {
-    const response = await axios.post<UserData>(
-      `${import.meta.env.VITE_API_URL}/login`,
-      loginFormValue
-    );
-    return response.data;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    throw new Error(axiosError.response?.statusText || "Unknown error");
-  }
-};
-
-export const getMaintenanceStatus = async (): Promise<boolean> => {
-  try {
-    const response = await axios.get<boolean>(
-      `${import.meta.env.VITE_API_URL}/maintenance`
-    );
+    const response = await axios({
+      method,
+      url: `${import.meta.env.VITE_API_URL}/${endpoint}`,
+      data,
+    });
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -30,4 +21,14 @@ export const getMaintenanceStatus = async (): Promise<boolean> => {
     toast.error(`Error: ${axiosError.message || "Unknown error"}`);
     throw new Error(axiosError.response?.statusText || "Unknown error");
   }
+};
+
+export const handleLogin = (
+  loginFormValue: LoginFormValue
+): Promise<UserData> => {
+  return apiRequest<UserData>("post", "login", loginFormValue);
+};
+
+export const getMaintenanceStatus = (): Promise<boolean> => {
+  return apiRequest<boolean>("get", "maintenance");
 };

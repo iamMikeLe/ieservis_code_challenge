@@ -44,8 +44,8 @@ function LoginPage(): JSX.Element {
   }, [userData, navigate]);
 
   useEffect(() => {
-    getMaintenanceStatus().then((isUnderMaintenance) =>
-      dispatch(setMaintenance(isUnderMaintenance))
+    getMaintenanceStatus().then((maintenance) =>
+      dispatch(setMaintenance(maintenance))
     );
   }, [dispatch]);
 
