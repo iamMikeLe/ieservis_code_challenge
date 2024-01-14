@@ -7,7 +7,7 @@ export const handleLogin = async (
 ): Promise<UserData> => {
   try {
     const response = await axios.post<UserData>(
-      "http://localhost:5000/login",
+      `${import.meta.env.VITE_API_URL}/login`,
       loginFormValue
     );
     return response.data;
