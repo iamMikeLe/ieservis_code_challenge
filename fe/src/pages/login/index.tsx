@@ -38,7 +38,10 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if ((userData as UserData)?.type === "user") {
+    if (
+      (userData as UserData)?.type === "user" ||
+      (userData as UserData)?.type === "admin"
+    ) {
       navigate("/images-to-pdf");
     }
   }, [userData, navigate]);
