@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -25,23 +25,31 @@ describe("When not logged in", () => {
     });
   });
 
-  test("it renders Intro page on Home navigation click", () => {
+  test("it renders Intro page on Home navigation click", async () => {
     fireEvent.click(screen.getByTestId("home-nav"));
 
-    const introPageDiv = screen.getByTestId("intro");
-    expect(introPageDiv).toBeInTheDocument();
+    await waitFor(() => {
+      const introPageElement = screen.getByTestId("intro");
+      expect(introPageElement).toBeInTheDocument();
+    });
   });
 
-  test("it renders login page on Login navigation click", () => {
+  test("it renders login page on Login navigation click", async () => {
     fireEvent.click(screen.getByTestId("login-nav"));
-    const loginPageDiv = screen.getByTestId("login-page");
-    expect(loginPageDiv).toBeInTheDocument();
+
+    await waitFor(() => {
+      const loginPageElement = screen.getByTestId("login-page");
+      expect(loginPageElement).toBeInTheDocument();
+    });
   });
 
-  test("it renders admin login page on Admin navigation click", () => {
+  test("it renders admin login page on Admin navigation click", async () => {
     fireEvent.click(screen.getByTestId("admin-login-nav"));
-    const adminLoginPageDiv = screen.getByTestId("admin-login");
-    expect(adminLoginPageDiv).toBeInTheDocument();
+
+    await waitFor(() => {
+      const adminLoginPageElement = screen.getByTestId("admin-login");
+      expect(adminLoginPageElement).toBeInTheDocument();
+    });
   });
 });
 
@@ -56,21 +64,69 @@ describe("When logged in as user", () => {
       </Provider>
     );
   });
-  test("it renders Intro page on Home navigation click", () => {
+  test("it renders Intro page on Home navigation click", async () => {
     fireEvent.click(screen.getByTestId("home-nav"));
-    const introPageDiv = screen.getByTestId("intro");
-    expect(introPageDiv).toBeInTheDocument();
+
+    await waitFor(() => {
+      const introPageElement = screen.getByTestId("intro");
+      expect(introPageElement).toBeInTheDocument();
+    });
   });
 
-  test("it renders images to pdf page on Converter navigation click", () => {
+  test("it renders images to pdf page on Converter navigation click", async () => {
     fireEvent.click(screen.getByTestId("converter-nav"));
-    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
-    expect(converterPageDiv).toBeInTheDocument();
+
+    await waitFor(() => {
+      const converterPageElement = screen.getByTestId("img-to-pdf-page");
+      expect(converterPageElement).toBeInTheDocument();
+    });
   });
 
-  test("it renders login page on Logout navigation click", () => {
+  test("it renders login page on Logout navigation click", async () => {
     fireEvent.click(screen.getByTestId("logout"));
-    const loginPageDiv = screen.getByTestId("login-page");
-    expect(loginPageDiv).toBeInTheDocument();
+
+    await waitFor(() => {
+      const loginPageElement = screen.getByTestId("login-page");
+      expect(loginPageElement).toBeInTheDocument();
+    });
+  });
+});
+
+describe("When logged in as admin", () => {
+  beforeEach(() => {
+    store.dispatch(setUserData({ email: "test@email.com", type: "admin" }));
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/images-to-pdf"]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+  });
+  test("it renders Intro page on Home navigation click", async () => {
+    fireEvent.click(screen.getByTestId("home-nav"));
+
+    await waitFor(() => {
+      const introPageElement = screen.getByTestId("intro");
+      expect(introPageElement).toBeInTheDocument();
+    });
+  });
+
+  test("it renders images to pdf page on Converter navigation click", async () => {
+    fireEvent.click(screen.getByTestId("converter-nav"));
+
+    await waitFor(() => {
+      const converterPageElement = screen.getByTestId("img-to-pdf-page");
+      expect(converterPageElement).toBeInTheDocument();
+    });
+  });
+
+  test("it renders login page on Logout navigation click", async () => {
+    fireEvent.click(screen.getByTestId("logout"));
+
+    await waitFor(() => {
+      const loginPageElement = screen.getByTestId("login-page");
+      expect(loginPageElement).toBeInTheDocument();
+    });
   });
 });
