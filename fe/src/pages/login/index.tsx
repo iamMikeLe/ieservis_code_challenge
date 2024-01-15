@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   isLoginLoading,
   selectLoginFormValues,
-  setMealForm,
+  setLoginForm,
 } from "./loginSlice";
 
 function LoginPage(): JSX.Element {
@@ -86,7 +86,9 @@ function LoginPage(): JSX.Element {
                 value={email}
                 disabled={isUnderMaintenance}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  dispatch(setMealForm({ key: "email", value: e.target.value }))
+                  dispatch(
+                    setLoginForm({ key: "email", value: e.target.value })
+                  )
                 }
                 data-testid="email-input"
               />
@@ -100,7 +102,7 @@ function LoginPage(): JSX.Element {
                 disabled={isUnderMaintenance}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch(
-                    setMealForm({ key: "password", value: e.target.value })
+                    setLoginForm({ key: "password", value: e.target.value })
                   )
                 }
                 data-testid="password-input"

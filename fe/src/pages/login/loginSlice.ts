@@ -7,7 +7,7 @@ export type LoginFormValue = {
   password: string;
 };
 
-type LoginSlice = {
+export type LoginSlice = {
   loginFormValues: LoginFormValue;
   loading: boolean;
 };
@@ -24,7 +24,7 @@ export const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    setMealForm: (
+    setLoginForm: (
       state,
       action: PayloadAction<{
         key: keyof LoginFormValue;
@@ -51,7 +51,7 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { setLoading, setMealForm } = loginSlice.actions;
+export const { setLoading, setLoginForm } = loginSlice.actions;
 
 export const selectLoginFormValues = (state: RootState) =>
   state.login.loginFormValues;

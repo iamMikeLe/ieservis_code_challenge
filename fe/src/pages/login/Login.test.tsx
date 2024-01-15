@@ -5,12 +5,12 @@ import App from "../../App";
 
 import { setMaintenance } from "../../store/generalSlice";
 import { store } from "../../store/store";
-import { setMealForm } from "./loginSlice";
+import { setLoginForm } from "./loginSlice";
 
 describe("When not logged in", () => {
   beforeEach(() => {
-    store.dispatch(setMealForm({ key: "email", value: "test@example.com" }));
-    store.dispatch(setMealForm({ key: "password", value: "123456Asd" }));
+    store.dispatch(setLoginForm({ key: "email", value: "test@example.com" }));
+    store.dispatch(setLoginForm({ key: "password", value: "123456Asd" }));
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/login"]}>
