@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { getMaintenanceStatus, handleLogin } from "../API/userAPI";
+import { handleAdminLogin, handleLogin } from "../API/userAPI";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { RootState } from "./store";
 
@@ -26,7 +25,10 @@ export const handleLoginAsync = createAsyncThunk(
   "general/handleLogin",
   async (loginFormValue: LoginFormValue, { rejectWithValue }) => {
     try {
-      const userDataPromise = handleLogin(loginFormValue);
+      const userDataPromise =
+        loginFormValue.type === "user"
+          ? handleLogin(loginFormValue)
+          : handleAdminLogin(loginFormValue);
       toast.dismiss();
       toast.promise(userDataPromise, {
         loading: "Logging in...",

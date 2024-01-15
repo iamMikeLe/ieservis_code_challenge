@@ -1,5 +1,6 @@
 import axios, { AxiosError, Method } from "axios";
 import toast from "react-hot-toast";
+import { AdminLoginFormValue } from "../pages/adminLogin/adminLoginSlice";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
 
@@ -27,6 +28,12 @@ export const handleLogin = (
   loginFormValue: LoginFormValue
 ): Promise<UserData> => {
   return apiRequest<UserData>("post", "login", loginFormValue);
+};
+
+export const handleAdminLogin = (
+  adminLoginFormValue: AdminLoginFormValue
+): Promise<UserData> => {
+  return apiRequest<UserData>("post", "admin/login", adminLoginFormValue);
 };
 
 export const getMaintenanceStatus = (): Promise<boolean> => {

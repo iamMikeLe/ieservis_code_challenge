@@ -52,7 +52,7 @@ function LoginPage(): JSX.Element {
   const handleLogin = () => {
     const isLoginValid = loginValidation(email, password);
     if (!isLoginValid) return;
-    dispatch(handleLoginAsync({ email, password }));
+    dispatch(handleLoginAsync({ email, password, type: "user" }));
   };
 
   return (

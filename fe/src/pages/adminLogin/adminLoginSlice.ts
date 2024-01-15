@@ -2,38 +2,36 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { handleLoginAsync } from "../../store/generalSlice";
 import { RootState } from "../../store/store";
 
-export type LoginFormValue = {
+export type AdminLoginFormValue = {
   email: string;
   password: string;
-  type: string;
 };
 
-export type LoginSlice = {
-  loginFormValues: LoginFormValue;
+export type AdminLoginSlice = {
+  adminLoginFormValues: AdminLoginFormValue;
   loading: boolean;
 };
 
-const initialState: LoginSlice = {
-  loginFormValues: {
+const initialState: AdminLoginSlice = {
+  adminLoginFormValues: {
     email: "",
     password: "",
-    type: "user",
   },
   loading: false,
 };
 
-export const loginSlice = createSlice({
-  name: "login",
+export const adminLoginSlice = createSlice({
+  name: "adminLogin",
   initialState,
   reducers: {
-    setLoginForm: (
+    setAdminLoginForm: (
       state,
       action: PayloadAction<{
-        key: keyof LoginFormValue;
+        key: keyof AdminLoginFormValue;
         value: string;
       }>
     ) => {
-      state.loginFormValues[action.payload.key] = action.payload.value;
+      state.adminLoginFormValues[action.payload.key] = action.payload.value;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
@@ -53,10 +51,11 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { setLoading, setLoginForm } = loginSlice.actions;
+export const { setLoading, setAdminLoginForm } = adminLoginSlice.actions;
 
-export const selectLoginFormValues = (state: RootState) =>
-  state.login.loginFormValues;
-export const isLoginLoading = (state: RootState) => state.login.loading;
+export const selectAdminLoginFormValues = (state: RootState) =>
+  state.adminLogin.adminLoginFormValues;
+export const isAdminLoginLoading = (state: RootState) =>
+  state.adminLogin.loading;
 
-export default loginSlice.reducer;
+export default adminLoginSlice.reducer;

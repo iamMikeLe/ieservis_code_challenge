@@ -8,9 +8,42 @@ import {
   MDBInput,
   MDBRow,
 } from "mdb-react-ui-kit";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { loginValidation } from "../../Utils/loginValidation";
 import pc from "../../assets/images/pc.jpg";
+import {
+  UserData,
+  handleLoginAsync,
+  selectUserData,
+} from "../../store/generalSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  isAdminLoginLoading,
+  selectAdminLoginFormValues,
+  setAdminLoginForm,
+} from "./adminLoginSlice";
 
 function AdminLogin(): JSX.Element {
+  const { email, password } = useAppSelector(selectAdminLoginFormValues);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const userData = useAppSelector(selectUserData);
+  const loading = useAppSelector(isAdminLoginLoading);
+
+  useEffect(() => {
+    if ((userData as UserData)?.type === "admin") {
+      navigate("/images-to-pdf");
+    }
+  }, [userData, navigate]);
+
+  const handleLogin = () => {
+    const isLoginValid = loginValidation(email, password);
+    if (!isLoginValid) return;
+    dispatch(handleLoginAsync({ email, password, type: "admin" }));
+  };
+
   return (
     <MDBContainer className="my-5" data-testid="admin-login">
       <MDBCard>
@@ -35,19 +68,40 @@ function AdminLogin(): JSX.Element {
               <MDBInput
                 wrapperClass="mb-4"
                 label="Email address"
-                id="formControlLg"
+                id="email"
                 type="email"
                 size="lg"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setAdminLoginForm({ key: "email", value: e.target.value })
+                  )
+                }
               />
               <MDBInput
                 wrapperClass="mb-4"
                 label="Password"
-                id="formControlLg"
+                id="password"
                 type="password"
                 size="lg"
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setAdminLoginForm({
+                      key: "password",
+                      value: e.target.value,
+                    })
+                  )
+                }
               />
 
-              <MDBBtn className="mb-4 px-5" color="dark" size="lg">
+              <MDBBtn
+                className="mb-4 px-5"
+                color="dark"
+                size="lg"
+                disabled={loading}
+                onClick={handleLogin}
+              >
                 Login
               </MDBBtn>
             </MDBCardBody>

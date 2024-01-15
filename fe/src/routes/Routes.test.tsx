@@ -18,6 +18,13 @@ function renderWithStoreAndRouter(
       loginFormValues: {
         email: "",
         password: "",
+        type: "user",
+      },
+    },
+    adminLogin: {
+      adminLoginFormValues: {
+        email: "",
+        password: "",
       },
     },
   });
