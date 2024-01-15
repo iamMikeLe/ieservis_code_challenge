@@ -1,5 +1,4 @@
 import axios, { AxiosError, Method } from "axios";
-import toast from "react-hot-toast";
 import { AdminLoginFormValue } from "../pages/adminLogin/adminLoginSlice";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
@@ -18,9 +17,12 @@ export const apiRequest = async <T>(
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
-    toast.dismiss();
-    toast.error(`Error: ${axiosError.message || "Unknown error"}`);
-    throw new Error(axiosError.response?.statusText || "Unknown error");
+    console.log("axiosError", axiosError);
+    let errMsg = axiosError.response?.statusText || "Unknown error";
+    if (axiosError.code === "ERR_NETWORK") {
+      errMsg = "No internet connection";
+    }
+    throw new Error(errMsg);
   }
 };
 
