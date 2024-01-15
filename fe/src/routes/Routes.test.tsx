@@ -106,3 +106,35 @@ describe("When logged in as user", () => {
     expect(errorPageDiv).toBeInTheDocument();
   });
 });
+
+describe("When logged in as admin", () => {
+  test("it renders intro page on / route", () => {
+    renderWithStoreAndRouter({ type: "admin" }, "/");
+    const introPageDiv = screen.getByTestId("intro");
+    expect(introPageDiv).toBeInTheDocument();
+  });
+
+  test("it renders images-to-pdf page on /login route", () => {
+    renderWithStoreAndRouter({ type: "admin" }, "/login");
+    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
+    expect(converterPageDiv).toBeInTheDocument();
+  });
+
+  test("it renders images-to-pdf page on /admin/login route", () => {
+    renderWithStoreAndRouter({ type: "admin" }, "/admin/login");
+    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
+    expect(converterPageDiv).toBeInTheDocument();
+  });
+
+  test("it renders images-to-pdf page on /images-to-pdf route", () => {
+    renderWithStoreAndRouter({ type: "admin" }, "/images-to-pdf");
+    const converterPageDiv = screen.getByTestId("img-to-pdf-page");
+    expect(converterPageDiv).toBeInTheDocument();
+  });
+
+  test("it renders error page on invalid route", () => {
+    renderWithStoreAndRouter({ type: "admin" }, "/someInvalid-route");
+    const errorPageDiv = screen.getByTestId("error-page");
+    expect(errorPageDiv).toBeInTheDocument();
+  });
+});
