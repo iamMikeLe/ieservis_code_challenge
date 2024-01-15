@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 
@@ -6,18 +7,27 @@ import App from "../../App";
 import { setUserData } from "../../store/generalSlice";
 import { store } from "../../store/store";
 
+vi.mock("../../API/userAPI", () => ({
+  apiRequest: vi.fn(),
+  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
+}));
+
 describe("When not logged in", () => {
-  beforeEach(() => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/login"]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
+  beforeEach(async () => {
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={["/login"]}>
+            <App />
+          </MemoryRouter>
+        </Provider>
+      );
+    });
   });
+
   test("it renders Intro page on Home navigation click", () => {
     fireEvent.click(screen.getByTestId("home-nav"));
+
     const introPageDiv = screen.getByTestId("intro");
     expect(introPageDiv).toBeInTheDocument();
   });
