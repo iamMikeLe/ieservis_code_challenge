@@ -4,7 +4,7 @@ import { AdminLoginFormValue } from "../pages/adminLogin/adminLoginSlice";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
 
-const apiRequest = async <T>(
+export const apiRequest = async <T>(
   method: Method,
   endpoint: string,
   data?: unknown

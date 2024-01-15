@@ -6,6 +6,11 @@ import App from "../App";
 
 const mockStore = configureStore([]);
 
+vi.mock("../API/userAPI", () => ({
+  apiRequest: vi.fn(),
+  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
+}));
+
 function renderWithStoreAndRouter(
   userData: { type: string },
   initialRoute: string

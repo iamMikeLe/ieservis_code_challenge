@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import App from "../../App";
@@ -7,17 +8,25 @@ import { setMaintenance } from "../../store/generalSlice";
 import { store } from "../../store/store";
 import { setLoginForm } from "./loginSlice";
 
+vi.mock("../../API/userAPI", () => ({
+  apiRequest: vi.fn(),
+  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
+}));
+
 describe("When not logged in", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     store.dispatch(setLoginForm({ key: "email", value: "test@example.com" }));
     store.dispatch(setLoginForm({ key: "password", value: "123456Asd" }));
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/login"]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={["/login"]}>
+            <App />
+          </MemoryRouter>
+        </Provider>
+      );
+    });
   });
 
   test("input value reflects state update", () => {
@@ -31,16 +40,20 @@ describe("When not logged in", () => {
 });
 
 describe("When under maintenance", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     store.dispatch(setMaintenance(true));
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/login"]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={["/login"]}>
+            <App />
+          </MemoryRouter>
+        </Provider>
+      );
+    });
   });
+
   test("it should render maintenance component", () => {
     const maintenanceElement = screen.getByTestId("maintenance");
     expect(maintenanceElement).toBeInTheDocument();
