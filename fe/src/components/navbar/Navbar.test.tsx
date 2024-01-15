@@ -9,7 +9,7 @@ import { store } from "../../store/store";
 
 vi.mock("../../API/userAPI", () => ({
   apiRequest: vi.fn(),
-  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
+  getMaintenanceStatus: vi.fn().mockResolvedValue(false),
 }));
 
 describe("When not logged in", () => {

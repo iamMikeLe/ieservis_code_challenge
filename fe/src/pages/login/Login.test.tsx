@@ -4,14 +4,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import App from "../../App";
 
-import { setMaintenance } from "../../store/generalSlice";
 import { store } from "../../store/store";
 import { setLoginForm } from "./loginSlice";
-
-vi.mock("../../API/userAPI", () => ({
-  apiRequest: vi.fn(),
-  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
-}));
 
 describe("When not logged in", () => {
   beforeEach(async () => {
@@ -41,8 +35,10 @@ describe("When not logged in", () => {
 
 describe("When under maintenance", () => {
   beforeEach(async () => {
-    store.dispatch(setMaintenance(true));
-
+    vi.mock("../../API/userAPI", () => ({
+      apiRequest: vi.fn(),
+      getMaintenanceStatus: vi.fn().mockResolvedValue(true),
+    }));
     await act(async () => {
       render(
         <Provider store={store}>
