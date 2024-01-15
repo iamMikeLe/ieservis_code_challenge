@@ -14,7 +14,7 @@ router.get("/maintenance", maintenanceControler.getMaintenanceStatus);
 
 /**
  * POST REQUEST - to set maintenance status
- * route: /set-maintenance
+ * route: /maintenance
  * @param isUnderMaintenance {Boolean}
  * @returns {Object} - maintenance status
  */
