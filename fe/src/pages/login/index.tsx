@@ -29,6 +29,10 @@ import {
   setLoginForm,
 } from "./loginSlice";
 
+type MaintenanceStatusResponse = {
+  maintenance: boolean;
+};
+
 function LoginPage(): JSX.Element {
   const { email, password } = useAppSelector(selectLoginFormValues);
   const isUnderMaintenance = useAppSelector(selectMaintenance);
@@ -47,8 +51,10 @@ function LoginPage(): JSX.Element {
   }, [userData, navigate]);
 
   useEffect(() => {
-    getMaintenanceStatus().then((maintenance) =>
-      dispatch(setMaintenance(maintenance))
+    getMaintenanceStatus().then(
+      ({ maintenance }: MaintenanceStatusResponse) => {
+        dispatch(setMaintenance(maintenance));
+      }
     );
   }, [dispatch]);
 

@@ -3,6 +3,11 @@ import { AdminLoginFormValue } from "../pages/adminLogin/adminLoginSlice";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
 
+type AdminSettings = {
+  maintenance: boolean;
+  maxImagesToConvert: number;
+};
+
 type MaintenanceResponse = {
   isUnderMaintenance: boolean;
 };
@@ -42,8 +47,8 @@ export const handleAdminLogin = (
   return apiRequest<UserData>("post", "admin/login", adminLoginFormValue);
 };
 
-export const getMaintenanceStatus = (): Promise<boolean> => {
-  return apiRequest<boolean>("get", "maintenance");
+export const getMaintenanceStatus = (): Promise<AdminSettings> => {
+  return apiRequest<AdminSettings>("get", "settings");
 };
 
 export const updateMaintenanceMode = async (
