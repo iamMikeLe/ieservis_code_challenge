@@ -35,21 +35,40 @@ const img = {
 
 function Convertor(): JSX.Element {
   const [images, setImages] = useState<Array<{ src: string; file: File }>>([]);
+  const MAX_IMAGES = 5; // maximum number of allowed images
+  const [maxImagesReached, setMaxImagesReached] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      // Calculate how many files we can take
+      const availableSlots = MAX_IMAGES - images.length;
 
-      reader.onloadend = () => {
-        setImages((prevImages) => [
-          ...prevImages,
-          { src: reader.result as string, file },
-        ]);
-      };
+      // If the user tries to upload more images than allowed, alert them and return early
+      if (acceptedFiles.length > availableSlots) {
+        alert(`You can only upload ${availableSlots} images.`);
+        return;
+      }
 
-      reader.readAsDataURL(file);
-    });
-  }, []);
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          setImages((prevImages) => [
+            ...prevImages,
+            { src: reader.result as string, file },
+          ]);
+        };
+
+        reader.readAsDataURL(file);
+      });
+
+      // If we've reached the maximum number of images, set the flag
+      if (images.length + acceptedFiles.length >= MAX_IMAGES) {
+        setMaxImagesReached(true);
+      }
+    },
+    [images]
+  );
 
   const generatePdf = () => {
     const pdf = new jsPDF();
@@ -116,21 +135,34 @@ function Convertor(): JSX.Element {
     onDrop,
   });
 
+  console.log("images", images.length);
   return (
     <MDBCard>
       <MDBCardBody>
-        <div {...getRootProps({ className: "dropzone" })}>
+        <div
+          {...(maxImagesReached ? {} : getRootProps({ className: "dropzone" }))}
+          style={{
+            border: "2px dashed #888",
+            padding: "20px",
+            cursor: maxImagesReached ? "default" : "pointer",
+          }}
+        >
           <input
-            {...getInputProps()}
-            style={{
-              border: "2px dashed #888",
-              padding: "20px",
-              cursor: "pointer",
-            }}
+            {...getInputProps({ disabled: maxImagesReached })}
+            style={{ display: "none" }}
           />
+          {maxImagesReached ? (
+            <p>You have reached the maximum number of images ({MAX_IMAGES}).</p>
+          ) : (
+            <p>
+              Drag 'n' drop, or click to select at least one file to convert.
+            </p>
+          )}
         </div>
         <aside style={thumbsContainer}>{thumbs}</aside>
-        <button onClick={generatePdf}>Generate PDF</button>
+        <button onClick={generatePdf} disabled={images.length === 0}>
+          Generate PDF
+        </button>
       </MDBCardBody>
     </MDBCard>
   );
