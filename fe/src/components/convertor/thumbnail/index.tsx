@@ -1,3 +1,4 @@
+import { MDBIcon } from "mdb-react-ui-kit";
 import React from "react";
 
 type Image = {
@@ -14,7 +15,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ image, onRemove }) => {
     <div className="custom-thumb">
       <div className="custom-thumbInner">
         <img src={image.src} className="custom-img-style" />
-        <button onClick={onRemove}>x</button>
+        <button onClick={onRemove}>
+          <MDBIcon fas icon="times" />
+        </button>
       </div>
     </div>
   );
