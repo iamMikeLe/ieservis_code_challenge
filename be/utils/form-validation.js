@@ -14,7 +14,14 @@ const maintenance = [
     .withMessage('isUnderMaintenance must be either "true" or "false"'),
 ];
 
+const maxImageValidation = [
+  check("maxImagesToConvert")
+    .isNumeric()
+    .withMessage("maxImagesToConvert must be a number"),
+];
+
 module.exports = {
   userLogin,
   maintenance,
+  maxImageValidation,
 };

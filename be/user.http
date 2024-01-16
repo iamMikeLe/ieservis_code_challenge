@@ -42,6 +42,14 @@ POST http://localhost:5000/maintenance HTTP/1.1
 content-type: application/json
 
 {
-    "isUnderMaintenance": "invalid"
+    "isUnderMaintenance": false
 }
 
+###
+
+POST http://localhost:5000/max-images-to-convert HTTP/1.1
+content-type: application/json
+
+{
+    "maxImagesToConvert": 8
+}
