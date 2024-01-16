@@ -1,6 +1,6 @@
 # IE Service Code challenge
 
-Challenge requirement can be found on homepage of the app
+Challenge requirements can be found on the homepage of the app
 
 ## Technology Stack and Rationale
 
