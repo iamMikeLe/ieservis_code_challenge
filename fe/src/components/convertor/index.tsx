@@ -5,9 +5,15 @@ import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 
 import "./Convertor.css";
+import Thumbnail from "./thumbnail";
+
+export type PreConvertImage = {
+  file: File;
+  src: string;
+};
 
 function Convertor(): JSX.Element {
-  const [images, setImages] = useState<Array<{ src: string; file: File }>>([]);
+  const [images, setImages] = useState<PreConvertImage[]>([]);
   const MAX_IMAGES = 5; // maximum number of allowed images
   const [maxImagesReached, setMaxImagesReached] = useState(false);
 
@@ -93,15 +99,6 @@ function Convertor(): JSX.Element {
     }
   };
 
-  const thumbs = images.map((image, i) => (
-    <div className="custom-thumb" key={i}>
-      <div className="custom-thumbInner">
-        <img src={image.src} className="custom-img-style" />
-        <button onClick={() => handleRemove(i)}>x</button>
-      </div>
-    </div>
-  ));
-
   useEffect(() => {
     return () => images.forEach((image) => URL.revokeObjectURL(image.src));
   }, [images]);
@@ -126,7 +123,11 @@ function Convertor(): JSX.Element {
             </p>
           )}
         </div>
-        <aside className="custom-thumbsContainer">{thumbs}</aside>
+        <aside className="custom-thumbsContainer">
+          {images.map((image, i) => (
+            <Thumbnail key={i} image={image} onRemove={() => handleRemove(i)} />
+          ))}
+        </aside>
         <MDBBtn outline onClick={generatePdf} disabled={images.length === 0}>
           Generate PDF
         </MDBBtn>
