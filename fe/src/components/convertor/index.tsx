@@ -1,16 +1,50 @@
 import { jsPDF } from "jspdf";
-import { useCallback, useState } from "react";
+import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
+const thumbsContainer: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  marginTop: 16,
+};
+const thumb = {
+  display: "inline-flex",
+  borderRadius: 2,
+  border: "1px solid #eaeaea",
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: "border-box" as const,
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden",
+};
+
+const img = {
+  display: "block",
+  width: "auto",
+  height: "100%",
+};
+
 function Convertor(): JSX.Element {
-  const [images, setImages] = useState<Array<string>>([]);
+  const [images, setImages] = useState<Array<{ src: string; file: File }>>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setImages((prevImages) => [...prevImages, reader.result as string]);
+        setImages((prevImages) => [
+          ...prevImages,
+          { src: reader.result as string, file },
+        ]);
       };
 
       reader.readAsDataURL(file);
@@ -25,7 +59,7 @@ function Convertor(): JSX.Element {
     const loadImages = images.map((image, index) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.src = image;
+        img.src = image.src;
         img.onload = function () {
           const width = img.width;
           const height = img.height;
@@ -39,7 +73,7 @@ function Convertor(): JSX.Element {
             pdfWidth = HEIGHT * aspectRatio;
           }
 
-          pdf.addImage(image, "JPEG", 0, 0, pdfWidth, pdfHeight);
+          pdf.addImage(image.src, "JPEG", 0, 0, pdfWidth, pdfHeight);
           if (index < images.length - 1) {
             pdf.addPage();
           }
@@ -52,24 +86,53 @@ function Convertor(): JSX.Element {
     Promise.all(loadImages)
       .then(() => {
         pdf.save("download.pdf");
+        setImages([]);
       })
       .catch((error) => {
         console.error("Error generating PDF", error);
       });
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const thumbs = images.map((image) => (
+    <div style={thumb} key={image.file.name}>
+      <div style={thumbInner}>
+        <img
+          src={image.src}
+          style={img}
+          onLoad={() => {
+            URL.revokeObjectURL(image.src);
+          }}
+        />
+      </div>
+    </div>
+  ));
+
+  useEffect(() => {
+    return () => images.forEach((image) => URL.revokeObjectURL(image.src));
+  }, [images]);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: { "image/*": [] },
+    onDrop,
+  });
 
   return (
-    <div>
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-      <button onClick={generatePdf} disabled={images.length === 0}>
-        Generate PDF
-      </button>
-    </div>
+    <MDBCard>
+      <MDBCardBody>
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input
+            {...getInputProps()}
+            style={{
+              border: "2px dashed #888",
+              padding: "20px",
+              cursor: "pointer",
+            }}
+          />
+        </div>
+        <aside style={thumbsContainer}>{thumbs}</aside>
+        <button onClick={generatePdf}>Generate PDF</button>
+      </MDBCardBody>
+    </MDBCard>
   );
 }
 
