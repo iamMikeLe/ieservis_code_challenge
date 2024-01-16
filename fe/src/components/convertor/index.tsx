@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import toast from "react-hot-toast";
 
 const thumbsContainer: React.CSSProperties = {
   display: "flex",
@@ -25,6 +26,7 @@ const thumbInner = {
   display: "flex",
   minWidth: 0,
   overflow: "hidden",
+  position: "relative",
 };
 
 const img = {
@@ -45,7 +47,7 @@ function Convertor(): JSX.Element {
 
       // If the user tries to upload more images than allowed, alert them and return early
       if (acceptedFiles.length > availableSlots) {
-        alert(`You can only upload ${availableSlots} images.`);
+        toast.error(`You can only upload ${availableSlots} more image(s).`);
         return;
       }
 
@@ -111,17 +113,25 @@ function Convertor(): JSX.Element {
         console.error("Error generating PDF", error);
       });
   };
+  const handleRemove = (index: number) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+    if (newImages.length < MAX_IMAGES) {
+      setMaxImagesReached(false);
+    }
+  };
 
-  const thumbs = images.map((image) => (
-    <div style={thumb} key={image.file.name}>
+  const thumbs = images.map((image, i) => (
+    <div style={thumb} key={i}>
       <div style={thumbInner}>
-        <img
-          src={image.src}
-          style={img}
-          onLoad={() => {
-            URL.revokeObjectURL(image.src);
-          }}
-        />
+        <img src={image.src} style={img} />
+        <button
+          onClick={() => handleRemove(i)}
+          style={{ position: "absolute", right: 0, top: 0 }}
+        >
+          x
+        </button>
       </div>
     </div>
   ));
