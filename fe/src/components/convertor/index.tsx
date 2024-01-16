@@ -1,39 +1,10 @@
 import { jsPDF } from "jspdf";
-import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
+import { MDBBtn, MDBCard, MDBCardBody } from "mdb-react-ui-kit";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 
-const thumbsContainer: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  marginTop: 16,
-};
-const thumb = {
-  display: "inline-flex",
-  borderRadius: 2,
-  border: "1px solid #eaeaea",
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: "border-box" as const,
-};
-
-const thumbInner = {
-  display: "flex",
-  minWidth: 0,
-  overflow: "hidden",
-  position: "relative",
-};
-
-const img = {
-  display: "block",
-  width: "auto",
-  height: "100%",
-};
+import "./Convertor.css";
 
 function Convertor(): JSX.Element {
   const [images, setImages] = useState<Array<{ src: string; file: File }>>([]);
@@ -110,7 +81,7 @@ function Convertor(): JSX.Element {
         setImages([]);
       })
       .catch((error) => {
-        console.error("Error generating PDF", error);
+        toast.error("Error generating PDF", error);
       });
   };
   const handleRemove = (index: number) => {
@@ -123,15 +94,10 @@ function Convertor(): JSX.Element {
   };
 
   const thumbs = images.map((image, i) => (
-    <div style={thumb} key={i}>
-      <div style={thumbInner}>
-        <img src={image.src} style={img} />
-        <button
-          onClick={() => handleRemove(i)}
-          style={{ position: "absolute", right: 0, top: 0 }}
-        >
-          x
-        </button>
+    <div className="custom-thumb" key={i}>
+      <div className="custom-thumbInner">
+        <img src={image.src} className="custom-img-style" />
+        <button onClick={() => handleRemove(i)}>x</button>
       </div>
     </div>
   ));
@@ -140,27 +106,18 @@ function Convertor(): JSX.Element {
     return () => images.forEach((image) => URL.revokeObjectURL(image.src));
   }, [images]);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps } = useDropzone({
     accept: { "image/*": [] },
     onDrop,
   });
 
-  console.log("images", images.length);
   return (
-    <MDBCard>
+    <MDBCard className="dropzone-wrapper">
       <MDBCardBody>
         <div
           {...(maxImagesReached ? {} : getRootProps({ className: "dropzone" }))}
-          style={{
-            border: "2px dashed #888",
-            padding: "20px",
-            cursor: maxImagesReached ? "default" : "pointer",
-          }}
+          className="custom-dropzone"
         >
-          <input
-            {...getInputProps({ disabled: maxImagesReached })}
-            style={{ display: "none" }}
-          />
           {maxImagesReached ? (
             <p>You have reached the maximum number of images ({MAX_IMAGES}).</p>
           ) : (
@@ -169,10 +126,10 @@ function Convertor(): JSX.Element {
             </p>
           )}
         </div>
-        <aside style={thumbsContainer}>{thumbs}</aside>
-        <button onClick={generatePdf} disabled={images.length === 0}>
+        <aside className="custom-thumbsContainer">{thumbs}</aside>
+        <MDBBtn outline onClick={generatePdf} disabled={images.length === 0}>
           Generate PDF
-        </button>
+        </MDBBtn>
       </MDBCardBody>
     </MDBCard>
   );
