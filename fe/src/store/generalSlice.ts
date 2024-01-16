@@ -61,6 +61,9 @@ export const generalSlice = createSlice({
     setMaintenance: (state, action: PayloadAction<boolean>) => {
       state.maintenance = action.payload;
     },
+    setMaxImagesToConvert: (state, action: PayloadAction<number>) => {
+      state.maxImagesToConvert = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -79,8 +82,12 @@ export const generalSlice = createSlice({
       });
   },
 });
-export const { clearUserData, setUserData, setMaintenance } =
-  generalSlice.actions;
+export const {
+  clearUserData,
+  setUserData,
+  setMaintenance,
+  setMaxImagesToConvert,
+} = generalSlice.actions;
 
 export const selectUserData = (state: RootState) => state.general.userData;
 export const isUserDataLoading = (state: RootState) => state.general.loading;

@@ -1,14 +1,8 @@
-import {
-  MDBBtn,
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBInput,
-  MDBRow,
-} from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBCol, MDBRow } from "mdb-react-ui-kit";
 
 import "./AdminSettings.css";
 import AppLock from "./appLock";
+import MaxLimit from "./maxLimit";
 
 function AdminSettings(): JSX.Element {
   return (
@@ -23,9 +17,7 @@ function AdminSettings(): JSX.Element {
             <AppLock />
           </MDBCol>
           <MDBCol md="6">
-            <h6>Set max allowed images to be uploaded</h6>
-            <MDBInput label="Max images" id="typeNumber" type="number" />
-            <MDBBtn style={{ marginTop: "0.5rem" }}>Submit</MDBBtn>
+            <MaxLimit />
           </MDBCol>
         </MDBRow>
       </MDBCardBody>
