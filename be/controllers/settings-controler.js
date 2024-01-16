@@ -13,10 +13,10 @@ const setMaintenance = async (req, res) => {
   const result = validationResult(req);
   if (!result.isEmpty())
     return res.status(400).send({ errors: result.array() });
-  console.log("req.body.maintenance", req.body);
+
   const maintenance = req.body.isUnderMaintenance;
   settings.maintenance = maintenance;
-  res.json({ maintenance });
+  res.json({ isUnderMaintenance: maintenance });
 };
 
 const setMaxImagesToConvert = async (req, res) => {

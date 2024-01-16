@@ -13,12 +13,14 @@ export type generalSlice = {
   userData: UserData | null;
   loading: boolean;
   maintenance: boolean;
+  maxImagesToConvert: number | null;
 };
 
 const initialState: generalSlice = {
   maintenance: false,
   userData: null,
   loading: false,
+  maxImagesToConvert: null,
 };
 
 export const handleLoginAsync = createAsyncThunk(
