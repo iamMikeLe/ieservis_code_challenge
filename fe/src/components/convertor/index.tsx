@@ -87,12 +87,13 @@ function Convertor(): JSX.Element {
         setImages([]);
       })
       .catch((error) => {
+        console.error(error);
         toast.error("Error generating PDF", error);
       });
   };
+
   const handleRemove = (index: number) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
+    const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
     if (newImages.length < MAX_IMAGES) {
       setMaxImagesReached(false);
