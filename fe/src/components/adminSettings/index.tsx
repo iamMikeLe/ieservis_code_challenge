@@ -37,7 +37,7 @@ function AdminSettings(): JSX.Element {
   }, [dispatch, isUnderMaintenance]);
 
   return (
-    <MDBCard className="convertor-box">
+    <MDBCard className="convertor-box" data-testid="admin-settings">
       <MDBCardBody>
         <h6>Admin app settings</h6>
         <MDBCheckbox
