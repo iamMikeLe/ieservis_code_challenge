@@ -13,14 +13,14 @@ export type generalSlice = {
   userData: UserData | null;
   loading: boolean;
   maintenance: boolean;
-  maxImagesToConvert: number | null;
+  maxImagesToConvert: number;
 };
 
 const initialState: generalSlice = {
   maintenance: false,
   userData: null,
   loading: false,
-  maxImagesToConvert: null,
+  maxImagesToConvert: 5,
 };
 
 export const handleLoginAsync = createAsyncThunk(
@@ -93,5 +93,7 @@ export const selectUserData = (state: RootState) => state.general.userData;
 export const isUserDataLoading = (state: RootState) => state.general.loading;
 export const selectMaintenance = (state: RootState) =>
   state.general.maintenance;
+export const selectMaxImagesAllowed = (state: RootState) =>
+  state.general.maxImagesToConvert;
 
 export default generalSlice.reducer;

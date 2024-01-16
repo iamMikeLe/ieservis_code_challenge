@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 
+import { selectMaxImagesAllowed } from "../../store/generalSlice";
+import { useAppSelector } from "../../store/hooks";
 import "./Convertor.css";
 import Thumbnail from "./thumbnail";
 
@@ -14,13 +16,13 @@ export type PreConvertImage = {
 
 function Convertor(): JSX.Element {
   const [images, setImages] = useState<PreConvertImage[]>([]);
-  const MAX_IMAGES = 5; // maximum number of allowed images
+  const maxImages = useAppSelector<number>(selectMaxImagesAllowed);
   const [maxImagesReached, setMaxImagesReached] = useState(false);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       // Calculate how many files we can take
-      const availableSlots = MAX_IMAGES - images.length;
+      const availableSlots = maxImages - images.length;
 
       // If the user tries to upload more images than allowed, alert them and return early
       if (acceptedFiles.length > availableSlots) {
@@ -42,11 +44,11 @@ function Convertor(): JSX.Element {
       });
 
       // If we've reached the maximum number of images, set the flag
-      if (images.length + acceptedFiles.length >= MAX_IMAGES) {
+      if (images.length + acceptedFiles.length >= maxImages) {
         setMaxImagesReached(true);
       }
     },
-    [images]
+    [images, maxImages]
   );
 
   const generatePdf = () => {
@@ -95,7 +97,7 @@ function Convertor(): JSX.Element {
   const handleRemove = (index: number) => {
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
-    if (newImages.length < MAX_IMAGES) {
+    if (newImages.length < maxImages) {
       setMaxImagesReached(false);
     }
   };
@@ -117,10 +119,12 @@ function Convertor(): JSX.Element {
           className="custom-dropzone"
         >
           {maxImagesReached ? (
-            <p>You have reached the maximum number of images ({MAX_IMAGES}).</p>
+            <p>You have reached the maximum number of images ({maxImages}).</p>
           ) : (
             <p>
-              Drag 'n' drop, or click to select at least one file to convert.
+              Drag 'n' drop, or click to select up to{" "}
+              {maxImages - images.length} {maxImages === 1 ? "image" : "images"}{" "}
+              to convert.
             </p>
           )}
         </div>
