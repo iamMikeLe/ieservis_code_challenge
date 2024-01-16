@@ -9,7 +9,10 @@ import { setAdminLoginForm } from "./adminLoginSlice";
 
 vi.mock("../../API/userAPI", () => ({
   apiRequest: vi.fn(),
-  getMaintenanceStatus: vi.fn().mockResolvedValue(false),
+  getMaintenanceStatus: vi.fn().mockResolvedValue({
+    maintenance: false,
+    maxImagesToConvert: 5,
+  }),
 }));
 
 describe("When not logged in", () => {

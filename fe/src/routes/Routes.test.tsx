@@ -8,7 +8,10 @@ const mockStore = configureStore([]);
 
 vi.mock("../API/userAPI", () => ({
   apiRequest: vi.fn(),
-  getMaintenanceStatus: vi.fn().mockResolvedValue({ status: "OK" }),
+  getMaintenanceStatus: vi.fn().mockResolvedValue({
+    maintenance: false,
+    maxImagesToConvert: 5,
+  }),
 }));
 
 function renderWithStoreAndRouter(

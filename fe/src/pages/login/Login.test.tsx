@@ -37,7 +37,10 @@ describe("When under maintenance", () => {
   beforeEach(async () => {
     vi.mock("../../API/userAPI", () => ({
       apiRequest: vi.fn(),
-      getMaintenanceStatus: vi.fn().mockResolvedValue(true),
+      getMaintenanceStatus: vi.fn().mockResolvedValue({
+        maintenance: true,
+        maxImagesToConvert: 5,
+      }),
     }));
     await act(async () => {
       render(
