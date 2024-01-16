@@ -1,7 +1,7 @@
-import axios from "axios";
 import { MDBCard, MDBCardBody, MDBCheckbox } from "mdb-react-ui-kit";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import { updateMaintenanceMode } from "../../API/userAPI";
 import { selectMaintenance, setMaintenance } from "../../store/generalSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
@@ -19,14 +19,10 @@ function AdminSettings(): JSX.Element {
     }, 500);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/maintenance`,
-        {
-          isUnderMaintenance: !isUnderMaintenance,
-        }
+      const newMaintenanceMode = await updateMaintenanceMode(
+        isUnderMaintenance
       );
-
-      dispatch(setMaintenance(response.data.isUnderMaintenance));
+      dispatch(setMaintenance(newMaintenanceMode));
     } catch (error) {
       toast.error("Error while updating maintenance mode");
     } finally {

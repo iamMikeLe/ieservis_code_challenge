@@ -1,7 +1,11 @@
-import axios, { AxiosError, Method } from "axios";
+import axios, { AxiosError, AxiosResponse, Method } from "axios";
 import { AdminLoginFormValue } from "../pages/adminLogin/adminLoginSlice";
 import { LoginFormValue } from "../pages/login/loginSlice";
 import { UserData } from "../store/generalSlice";
+
+type MaintenanceResponse = {
+  isUnderMaintenance: boolean;
+};
 
 export const apiRequest = async <T>(
   method: Method,
@@ -40,4 +44,17 @@ export const handleAdminLogin = (
 
 export const getMaintenanceStatus = (): Promise<boolean> => {
   return apiRequest<boolean>("get", "maintenance");
+};
+
+export const updateMaintenanceMode = async (
+  isUnderMaintenance: boolean
+): Promise<boolean> => {
+  const response: AxiosResponse<MaintenanceResponse> = await axios.post(
+    `${import.meta.env.VITE_API_URL}/maintenance`,
+    {
+      isUnderMaintenance: !isUnderMaintenance,
+    }
+  );
+
+  return response.data.isUnderMaintenance;
 };
