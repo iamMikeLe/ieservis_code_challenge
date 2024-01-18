@@ -47,6 +47,18 @@ Install and start frontend
   npm run dev
 ```
 
+test both fe and be you can use 
+
+```bash
+  cd fe
+  npm test
+```
+
+```bash
+  cd be
+  npm test
+```
+
 If you use yarn I will asume you know how to adjust the commands. I already added .env to .gitignore so need to create params
 
 In your browser open [http://localhost:5173/](http://localhost:5173/) to start testing
